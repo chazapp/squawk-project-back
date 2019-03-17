@@ -17,13 +17,13 @@ jobs:
               command: nose tests
 
     deploy:
-      machine:
-      enabled: true
-      steps:
-      - run:
-          name: Deploy to dirdapi.chaz.pro
-          command: |
-            ssh $SSH_USER@$SSH_HOST "~/deploy/dirdapi.sh"
+        machine:
+          enabled: true
+        steps:
+          - run:
+              name: Deploy to squawkapi.chaz.pro
+              command: |
+                ssh $SSH_USER@$SSH_HOST "~/deploy/dirdapi.sh"
 
 
 workflows:
