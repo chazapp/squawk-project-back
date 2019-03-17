@@ -13,10 +13,10 @@ jobs:
           name: Run tests
           command: nose tests
 
-  deploy:
-    machine:
+    deploy:
+      machine:
       enabled: true
-    steps:
+      steps:
       - run:
           name: Deploy to dirdapi.chaz.pro
           command: |
