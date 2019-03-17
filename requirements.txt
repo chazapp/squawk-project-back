@@ -5,3 +5,4 @@ flask
 python-dotenv
 flask-pymongo
 flask_jwt_extended
+nose
