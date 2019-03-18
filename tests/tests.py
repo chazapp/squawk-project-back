@@ -82,5 +82,4 @@ class TestClass(unittest.TestCase):
             resp = self.client.get('/sources', headers={
                 "Authorization": "Bearer " + self.token
             })
-            print(resp.get_json())
             self.assertEqual(200, resp.status_code)
