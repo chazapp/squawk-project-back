@@ -1,9 +1,5 @@
-from flask_pymongo import PyMongo
-import os
 from flask import Flask, g
 from flask_jwt_extended import JWTManager
-from flask_pymongo import PyMongo
-from dotenv import load_dotenv
 from app.auth import bp as auth
 
 from app.sources import bp as sources
@@ -36,8 +32,9 @@ def create_app(testing=False):
     return app
 
 
+app = create_app()
+
 if __name__ == '__main__':
-    app = create_app()
     app.app_context().push()
     app.run(host='0.0.0.0')
 
