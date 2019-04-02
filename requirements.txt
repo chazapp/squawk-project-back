@@ -1,4 +1,3 @@
-dotenv
 wtforms
 wtforms_json
 flask
