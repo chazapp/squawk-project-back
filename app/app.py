@@ -10,9 +10,10 @@ from app.sources import bp as sources
 import os
 from dotenv import load_dotenv
 
+app = Flask(__name__, instance_relative_config=True)
+
 
 def create_app(testing=False):
-    app = Flask(__name__, instance_relative_config=True)
     if not testing:
         load_dotenv()
         app.config.from_mapping(
