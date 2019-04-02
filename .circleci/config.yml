@@ -3,7 +3,7 @@ version: 2
 jobs:
     test:
         docker:
-          - image: harisekhon/jython
+          - image: python:latest
         steps:
           - checkout
           - run:
@@ -23,7 +23,7 @@ jobs:
           - run:
               name: Deploy to squawkapi.chaz.pro
               command: |
-                ssh $SSH_USER@$SSH_HOST "~/deploy/dirdapi.sh"
+                ssh $SSH_USER@$SSH_HOST "~/deploy/squawkapi.sh"
 
 
 workflows:
@@ -31,4 +31,12 @@ workflows:
   build_and_test:
     jobs:
     - test
+    - deploy:
+        requires:
+          - test
+        filters:
+          branches:
+            only: master
+
+
 

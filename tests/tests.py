@@ -6,7 +6,7 @@ from mockupdb import MockupDB, go, Command
 
 from flask import json, jsonify
 
-from squawk.app import create_app
+from app.app import create_app
 import requests
 
 

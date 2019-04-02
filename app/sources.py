@@ -52,7 +52,7 @@ def get_user_sources():
     username = get_jwt_identity()
     user = db.users.find_one({'username': username})
     sources = []
-    for doc in db.sources.find({"_id": { "$in": user['sources']}} ):
+    for doc in db.sources.find({"_id": {"$in": user['sources']}}):
         doc.pop('_id')
         obj = {
             "link": doc.get('link'),
