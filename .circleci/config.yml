@@ -15,6 +15,7 @@ jobs:
           - run: apt-get update
           - run: apt-get install -y mongodb
           - run: service mongodb start
+          - run: which nosetests
           - run:
               name: Run tests
               command: ./.local/bin/nosetests tests
