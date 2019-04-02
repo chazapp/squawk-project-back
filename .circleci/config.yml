@@ -6,12 +6,15 @@ jobs:
           - image: python:latest
         steps:
           - checkout
+          - run: apt-get install -y curl git
           - run:
               name: Install Dependencies
               command: pip install -r requirements.txt
-          - run:
-              name: Install MongoDB
-              command: apt-get install mongodb -y
+          - run: curl https://www.mongodb.org/static/pgp/server-4.0.asc | apt-key add -
+          - run: echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" >> /etc/apt/sources.list.d/mongodb-org-4.0.list
+          - run: apt-get update
+          - run: apt-get install -y mongodb
+          - run: service mongodb start
           - run:
               name: Run tests
               command: nose tests
