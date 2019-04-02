@@ -4,9 +4,9 @@ from flask import Flask, g
 from flask_jwt_extended import JWTManager
 from flask_pymongo import PyMongo
 from dotenv import load_dotenv
-from squawk.auth import bp as auth
+from app.auth import bp as auth
 
-from squawk.sources import bp as sources
+from app.sources import bp as sources
 import os
 from dotenv import load_dotenv
 

@@ -3,18 +3,22 @@ version: 2
 jobs:
     test:
         docker:
-          - image: harisekhon/jython
+          - image: python:latest
         steps:
           - checkout
+          - run: apt-get install -y curl git
           - run:
               name: Install Dependencies
               command: pip install -r requirements.txt
-          - run:
-              name: Install MongoDB
-              command: apt-get install mongodb -y
+          - run: curl https://www.mongodb.org/static/pgp/server-4.0.asc | apt-key add -
+          - run: echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" >> /etc/apt/sources.list.d/mongodb-org-4.0.list
+          - run: apt-get update
+          - run: apt-get install -y mongodb
+          - run: service mongodb start
+          - run: which nosetests
           - run:
               name: Run tests
-              command: nose tests
+              command: /usr/local/bin/nosetests tests
 
     deploy:
         machine:
@@ -23,7 +27,7 @@ jobs:
           - run:
               name: Deploy to squawkapi.chaz.pro
               command: |
-                ssh $SSH_USER@$SSH_HOST "~/deploy/dirdapi.sh"
+                ssh $SSH_USER@$SSH_HOST "~/deploy/squawkapi.sh"
 
 
 workflows:
@@ -31,4 +35,12 @@ workflows:
   build_and_test:
     jobs:
     - test
+    - deploy:
+        requires:
+          - test
+        filters:
+          branches:
+            only: master
+
+
 

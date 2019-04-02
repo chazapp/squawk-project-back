@@ -2,6 +2,7 @@
 A Flask Back-End for SquawkProject
 
 # Installation
+
 Pre-requisite:
  - Python 3.6
  - A running MongoDB instance
@@ -15,7 +16,7 @@ Specify the environnement variables, then run:
 ```
 $ cp .env.example .env
 $ nano .env
-$ python3 squawk/app.py
+$ python3 app/app.py
 ```
 
 Test the project:
