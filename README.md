@@ -2,18 +2,27 @@
 A Flask Back-End for SquawkProject
 
 # Installation
-Clone, install the dependencies, then run the project:
+
+Pre-requisite:
+ - Python 3.6
+ - A running MongoDB instance
+
+Clone, install the dependencies:
 ```bash
 $ git clone git@github.com:/shadonovitch/squawk-project-back
 $ pip install -r requirements.txt
-$ python3 squawk/app.py
+```
+Specify the environnement variables, then run:
+```
+$ cp .env.example .env
+$ nano .env
+$ python3 app/app.py
 ```
 
 Test the project:
 ```.env
 $ nose tests
 ```
-
 
 # Current API
 ```api
@@ -28,10 +37,10 @@ This backend should support the SquawkProject. It is a REST API that will be use
 [SquawkProject Frontend](https://github.com/shadonovitch/squawk-project-front) and
 [SquawkProject Desktop](https://github.com/shadonovitch/squawk-project-desktop).  
 The main features to be implemented are :
- - [ ] User creation and authentication
+ - [x] User creation and authentication
  - [ ] CRUD: Squawk Sources
    * A RSS or REST link to retrieve content
- - [ ] Get the list of Squawk Sources
+ - [x] Get the list of Squawk Sources
  - [ ] Get the content of a given Squawk Source
 
 ![SquawkProject](https://i.imgur.com/Z3VGJ01.png)
