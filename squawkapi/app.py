@@ -1,8 +1,8 @@
 from flask import Flask, g
 from flask_jwt_extended import JWTManager
-from app.auth import bp as auth
 
-from app.sources import bp as sources
+from squawkapi.auth import bp as auth
+from squawkapi.sources import bp as sources
 import os
 from dotenv import load_dotenv
 
@@ -30,12 +30,3 @@ def create_app(testing=False):
     app.register_blueprint(auth)
     app.register_blueprint(sources)
     return app
-
-
-app = create_app()
-
-if __name__ == '__main__':
-    app.app_context().push()
-    app.run(host='0.0.0.0')
-
-
