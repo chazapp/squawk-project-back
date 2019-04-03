@@ -3,6 +3,7 @@ wtforms_json
 flask
 python-dotenv
 flask-pymongo
+flask-cors
 flask_jwt_extended
 nose
 mockupdb
