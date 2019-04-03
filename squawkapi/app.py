@@ -4,11 +4,13 @@ from flask_jwt_extended import JWTManager
 from squawkapi.auth import bp as auth
 from squawkapi.sources import bp as sources
 import os
+from flask_cors import CORS
 from dotenv import load_dotenv
 
 
 def create_app(testing=False):
     app = Flask(__name__, instance_relative_config=True)
+    CORS(app)
     if not testing:
         load_dotenv()
         app.config.from_mapping(
