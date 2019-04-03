@@ -1,7 +1,7 @@
 import os
 import unittest
 from flask import json, jsonify
-from app.app import create_app
+from squawkapi.app import create_app
 
 
 class TestClass(unittest.TestCase):
