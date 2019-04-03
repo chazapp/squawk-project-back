@@ -16,7 +16,7 @@ Specify the environnement variables, then run:
 ```
 $ cp .env.example .env
 $ nano .env
-$ python3 app/app.py
+$ python3 -m squawkapi
 ```
 
 Test the project:
