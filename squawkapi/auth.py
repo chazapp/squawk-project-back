@@ -66,7 +66,7 @@ def authenticate():
             if check_password_hash(user['password'], form.password.data):
                 access_token = create_access_token(identity=user['username'])
                 db.users.update_one({'email': user['email']}, {'$push': {'accessTokens': access_token}})
-                return jsonify({"status:": "success",
+                return jsonify({"status": "success",
                                 "token": access_token}), 200
             else:
                 return jsonify({"status": "failed",
