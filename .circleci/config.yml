@@ -7,7 +7,6 @@ jobs:
         steps:
           - checkout
           - run: apt-get install -y curl git
-          - run: cd python
           - run:
               name: Install Dependencies
               command: pip install -r requirements.txt
@@ -19,7 +18,7 @@ jobs:
           - run: which nosetests
           - run:
               name: Run tests
-              command: /usr/local/bin/nosetests tests
+              command: cd python && /usr/local/bin/nosetests tests
 
     deploy:
         machine:
