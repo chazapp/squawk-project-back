@@ -1,3 +1,5 @@
+feedparser
+requests
 wtforms
 wtforms_json
 flask
@@ -7,3 +9,4 @@ flask-cors
 flask_jwt_extended
 nose
 mockupdb
+bson

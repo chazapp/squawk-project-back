@@ -30,6 +30,7 @@ POST /auth + {email, password} => 200, 400, 404
 POST /register + {username, email, password}
 POST /source + JWT + {link, name} => 201 + source_id, 400, 401 
 GET /sources + JWT => [{link, name}, ...]
+GET /source/<:id>/content + JWT =>
 ```
 
 # Objectives
