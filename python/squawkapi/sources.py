@@ -2,7 +2,7 @@ import os
 import wtforms_json
 import requests
 import feedparser
-from bson import ObjectId
+from flask_pymongo import ObjectId
 from dotenv import load_dotenv
 from flask import Flask, Blueprint, request, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity

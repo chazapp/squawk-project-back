@@ -9,4 +9,3 @@ flask-cors
 flask_jwt_extended
 nose
 mockupdb
-bson

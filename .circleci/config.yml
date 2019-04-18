@@ -7,10 +7,9 @@ jobs:
         steps:
           - checkout
           - run: apt-get install -y curl git
-          - run: cd python
           - run:
               name: Install Dependencies
-              command: pip install -r requirements.txt
+              command: cd python && pip install -r requirements.txt
           - run: curl https://www.mongodb.org/static/pgp/server-4.0.asc | apt-key add -
           - run: echo "deb http://repo.mongodb.org/apt/debian stretch/mongodb-org/4.0 main" >> /etc/apt/sources.list.d/mongodb-org-4.0.list
           - run: apt-get update
@@ -19,7 +18,7 @@ jobs:
           - run: which nosetests
           - run:
               name: Run tests
-              command: /usr/local/bin/nosetests tests
+              command: cd python && /usr/local/bin/nosetests tests
 
     deploy:
         machine:
