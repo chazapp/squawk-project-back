@@ -25,12 +25,14 @@ $ nose tests
 ```
 
 # Current API
+Consider anything between { braces } as JSON keys.  
+
 ```api
-POST /auth + {email, password} => 200, 400, 404
-POST /register + {username, email, password}
-POST /source + JWT + {link, name} => 201 + source_id, 400, 401 
-GET /sources + JWT => [{link, name}, ...]
-GET /source/<:id>/content + JWT =>
+POST /auth + {email, password} => 200 + { status, token }, 400, 404
+POST /register + {username, email, password} => 200 + { status, token }, 400, 409 
+POST /source + JWT + {link, name} => 201 + { status, source_id }, 400, 401 
+GET /sources + JWT => 200 + { "sources": [{link, name, source_id}, ...] }
+GET /source/<:id>/content + JWT => { "content": [{description, link, title}, ...], status }
 ```
 
 # Objectives
@@ -39,9 +41,9 @@ This backend should support the SquawkProject. It is a REST API that will be use
 [SquawkProject Desktop](https://github.com/shadonovitch/squawk-project-desktop).  
 The main features to be implemented are :
  - [x] User creation and authentication
- - [ ] CRUD: Squawk Sources
+ - [x] CRUD: Squawk Sources
    * A RSS or REST link to retrieve content
  - [x] Get the list of Squawk Sources
- - [ ] Get the content of a given Squawk Source
+ - [x] Get the content of a given Squawk Source
 
 ![SquawkProject](https://i.imgur.com/Z3VGJ01.png)
