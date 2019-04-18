@@ -1,0 +1,101 @@
+@import com.mohiva.play.silhouette.api.LoginInfo
+@import utils.RssReader
+
+@(loggedUser: Option[User], loginInfo:Option[LoginInfo])(implicit messages:Messages)
+
+@views.html.templates.mainApp(Messages("app.title"), tab = "index", loggedUser = loggedUser, loginInfo=loginInfo) {
+  <h2 class="text-primary">@Messages("index.header")</h2>
+  <p class="lead">
+    @loggedUser.map { user =>
+      @loginInfo.map { loginInfo =>
+        @user.profileFor(loginInfo).map { profile =>
+          @Html(Messages("index.logged", profile.username.getOrElse(Messages("index.none")), routes.Application.profile)) <br/>
+        }
+      }
+      @Html(Messages("index.signOut", routes.Auth.signOut))
+    }.getOrElse {
+      @Html(Messages("index.notLogged", routes.Auth.signIn, routes.Auth.startSignUp)) <br/>
+    }
+  </p>
+  <hr/>
+  <p class="lead">@Messages("index.restProfile")</p>
+  <button class="btn btn-default" onclick="fetchProfile()">@Messages("index.fetchProfile")</button>
+  <hr/>
+  <p class="lead">@Messages("index.restRSS")</p>
+  <input type="text">
+  <input type="submit" onclick="fetchRSS()">
+  <button class="btn btn-default" onclick="fetchRSS()">@Messages("index.fetchRSS")</button>
+}
+
+@views.html.dialog()
+
+<script type="text/javascript">
+
+
+
+  function fetchRSS() {
+    $.ajax("@routes.RestApi.rss", {
+      accept: {json:"application/json"},
+      success: function(data) {
+        showRSS(data)
+      },
+      statusCode: {
+        401: function(error) {
+          showError(error.responseJSON.error)
+        }
+      }
+    }).fail(function(error) {
+      if (error.status != 401) showError('@Messages("error.profileError")')
+    })
+  }
+
+  function fetchProfile() {
+    $.ajax("@routes.RestApi.profile", {
+      accept: {json:"application/json"},
+      success: function(data) {
+        showProfile(data)
+      },
+      statusCode: {
+        401: function(error) {
+          showError(error.responseJSON.error)
+        }
+      }
+    }).fail(function(error) {
+      if (error.status != 401) showError('@Messages("error.profileError")')
+    })
+  }
+
+  function showError(msg) {
+    $('#profileError :first-child').text(msg)
+    $("#profileData").hide()
+    $('#profileError').show()
+    $('#profileModal').modal()
+  }
+
+  function showProfile(data) {
+    var content = $('<dl class="dl-horizontal"></dl>')
+    content.append(
+    $('<dt>@Messages("dialog.email")</dt><dd>' + (data.email || '@Messages("dialog.none")') + '</dd>'),
+    $('<dt>@Messages("dialog.username")</dt><dd>' + (data.username || '@Messages("dialog.none")') + '</dd>'))
+    $('#profileData').empty().append(content)
+
+
+    $("#profileError").hide()
+    $('#profileData').show()
+    $('#profileModal').modal()
+  }
+
+  function showRSS(data) {
+    var content = $('<dl class="dl-horizontal"></dl>')
+    @utils.RssReader.read("https://reddit.com/r/python.rss")
+
+    content.append(
+    $('<dt>@Messages("dialog.sources")</dt><dd>' + (data.sources || '@Messages("dialog.none")') + '</dd>'))
+    $('#profileData').empty().append(content)
+
+
+    $("#profileError").hide()
+    $('#profileData').show()
+    $('#profileModal').modal()
+  }
+</script>

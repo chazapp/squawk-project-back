@@ -1,0 +1,10 @@
+---
+applications:
+- name: squawk
+  host: squawk
+  domain: test.net
+  memory: 512M
+  instances: 1
+  path: target/universal/squawk-1.0-SNAPSHOT.zip
+  env:
+    JAVA_OPTS: -Dconfig.resource=application.prod.conf
