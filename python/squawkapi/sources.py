@@ -9,7 +9,6 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_pymongo import PyMongo
 from wtforms import Form, StringField, validators
 
-
 load_dotenv()
 app = Flask(__name__)
 bp = Blueprint('sources', __name__, url_prefix='')
@@ -18,7 +17,7 @@ mongo = PyMongo(app, os.getenv('MONGO_URI'))
 
 
 class SourceForm(Form):
-    link = StringField('Link', [validators.Length(min=4, max=100)])
+    link = StringField('Link', [validators.URL()])
     name = StringField('Name', [validators.Length(min=6, max=35)])
 
 
@@ -62,8 +61,8 @@ def get_user_sources():
         }
         sources.append(obj)
     return jsonify({
-            'sources': sources
-            }), 200
+        'sources': sources
+    }), 200
 
 
 @bp.route('/source/<id>/content', methods=['GET'])
@@ -72,27 +71,31 @@ def get_source_content(id):
     db = mongo.db
     source = db.sources.find_one({'_id': ObjectId(id)})
     if source is not None:
-        rss = requests.get(source.get('link'), headers={'User-Agent': 'SquawkAPI'})
-        if rss.status_code == 200:
-            d = feedparser.parse(rss.content)
-            if d.bozo == 0:
-                out = []
-                for post in d.entries:
-                    obj = {
-                        "title": post.title,
-                        "link": post.link,
-                        "description": post.description,
-                    }
-                    out.append(obj)
-                return jsonify({"status": "success",
-                                "content": out}), 200
+        try:
+            rss = requests.get(source.get('link'), headers={'User-Agent': 'SquawkAPI'})
+            if rss.status_code == 200:
+                d = feedparser.parse(rss.content)
+                if d.bozo == 0:
+                    out = []
+                    for post in d.entries:
+                        obj = {
+                            "title": post.title,
+                            "link": post.link,
+                            "description": post.description,
+                        }
+                        out.append(obj)
+                    return jsonify({"status": "success",
+                                    "content": out}), 200
+                else:
+                    return jsonify({"status": "failed",
+                                    "message": "Malformed RSS ressource.",
+                                    "bozo": str(d.bozo_exception)}), 422
             else:
                 return jsonify({"status": "failed",
-                                "message": "Malformed RSS ressource.",
-                                "bozo": str(d.bozo_exception)}), 422
-        else:
+                                "message": "Could not retrieve source content."}), 422
+        except requests.RequestException:
             return jsonify({"status": "failed",
-                            "message": "Could not retrieve source content."}), 422
+                            "message": "Malformed URI ressource."}), 422
     else:
         return jsonify({"status": "failed",
                         "message": "Cannot find source."}), 404
