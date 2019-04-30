@@ -97,3 +97,23 @@ def get_source_content(id):
         return jsonify({"status": "failed",
                         "message": "Cannot find source."}), 404
 
+
+@bp.route('/source/<id>', methods=['DELETE'])
+@jwt_required
+def delete_source(id):
+    db = mongo.db
+    source = db.sources.find_one({'_id': ObjectId(id)})
+    username = get_jwt_identity()
+    user = db.users.find_one({'username': username})
+    if source is not None:
+        if user is not None:
+            db.sources.delete_one({'_id': ObjectId(id)})
+            db.users.update_one({"username": username}, {'$pull': {'sources': ObjectId(id)}})
+            return jsonify({"status": "success",
+                            "message": "Succesfully deleted source."}), 200
+        else:
+            return jsonify({"status": "failed",
+                            "message": "Bad token."}), 401
+    else:
+        return jsonify({"status": "failed",
+                        "message": "Cannot find source."}), 404
