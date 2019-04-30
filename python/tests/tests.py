@@ -72,6 +72,14 @@ class TestClass(unittest.TestCase):
                                     })
             self.assertEqual(201, resp.status_code)
             self.source_id = json.loads(resp.get_data(as_text=True))['source_id']
+            data = json.dumps({'link': 'foooobar',
+                               "name": 'foooobar',
+                               })
+            resp = self.client.post('/source', data=data, content_type='application/json',
+                                    headers={
+                                        "Authorization": 'Bearer ' + self.token
+                                    })
+            self.assertEqual(400, resp.status_code)
 
     def test_03_get_sources(self):
         with self.app.app_context():
